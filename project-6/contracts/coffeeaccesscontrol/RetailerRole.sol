@@ -17,7 +17,7 @@ contract RetailerRole {
 
   // In the constructor make the address that deploys this contract the 1st retailer
   constructor() public {
-    _removeRetailer(msg.sender);
+    _addRetailer(msg.sender);
   }
 
   // Define a modifier that checks to see if msg.sender has the appropriate role
@@ -50,6 +50,6 @@ contract RetailerRole {
   // Define an internal function '_removeRetailer' to remove this role, called by 'removeRetailer'
   function _removeRetailer(address account) internal {
     retailers.add(account);
-    emit RetailerRemoved(account);(account);
+    emit RetailerRemoved(account);
   }
 }

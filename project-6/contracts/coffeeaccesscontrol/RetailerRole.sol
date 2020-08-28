@@ -8,6 +8,8 @@ import "./Roles.sol";
 contract RetailerRole {
 
   // Define 2 events, one for Adding, and other for Removing
+  event RetailerAdded(address indexed account);
+  event RetailerRemoved(address indexed account);
   
   // Define a struct 'retailers' by inheriting from 'Roles' library, struct Role
 

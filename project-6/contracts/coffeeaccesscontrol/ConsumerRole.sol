@@ -17,7 +17,7 @@ contract ConsumerRole {
 
   // In the constructor make the address that deploys this contract the 1st consumer
   constructor() public {
-    _addConsumer(account);(msg.sender);
+    _addConsumer(msg.sender);
   }
 
   // Define a modifier that checks to see if msg.sender has the appropriate role

@@ -191,7 +191,7 @@ contract SupplyChain {
     // Update the appropriate fields
     
     // Emit the appropriate event
-    
+    emit Processed(_upc);
   }
 
   // Define a function 'packItem' that allows a farmer to mark an item 'Packed'
@@ -204,7 +204,7 @@ contract SupplyChain {
     // Update the appropriate fields
     
     // Emit the appropriate event
-    
+    emit Packed(_upc);
   }
 
   // Define a function 'sellItem' that allows a farmer to mark an item 'ForSale'
@@ -217,7 +217,7 @@ contract SupplyChain {
     // Update the appropriate fields
     
     // Emit the appropriate event
-    
+    emit ForSale(_upc);
   }
 
   // Define a function 'buyItem' that allows the disributor to mark an item 'Sold'
@@ -237,7 +237,7 @@ contract SupplyChain {
     // Transfer money to farmer
     
     // emit the appropriate event
-    
+    emit Sold(_upc);
   }
 
   // Define a function 'shipItem' that allows the distributor to mark an item 'Shipped'
@@ -251,7 +251,7 @@ contract SupplyChain {
     // Update the appropriate fields
     
     // Emit the appropriate event
-    
+    emit Shipped(_upc);
   }
 
   // Define a function 'receiveItem' that allows the retailer to mark an item 'Received'
@@ -264,7 +264,7 @@ contract SupplyChain {
     // Update the appropriate fields - ownerID, retailerID, itemState
     
     // Emit the appropriate event
-    
+    emit Received(_upc);
   }
 
   // Define a function 'purchaseItem' that allows the consumer to mark an item 'Purchased'
@@ -277,7 +277,7 @@ contract SupplyChain {
     // Update the appropriate fields - ownerID, consumerID, itemState
     
     // Emit the appropriate event
-    
+    emit Purchased(_upc);
   }
 
   // Define a function 'fetchItemBufferOne' that fetches the data

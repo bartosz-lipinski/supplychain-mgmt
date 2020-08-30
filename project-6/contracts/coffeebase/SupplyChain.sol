@@ -157,7 +157,8 @@ contract SupplyChain {
   function harvestItem(uint _upc, address _originFarmerID, string memory _originFarmName, string memory _originFarmInformation, string memory _originFarmLatitude, string memory _originFarmLongitude, string memory _productNotes) public 
   {
     // Add the new item as part of Harvest
-    Item harvestedItem = Item({
+    Item memory harvestedItem = Item({
+      sku: sku,
       upc:_upc, 
       ownerID:_originFarmerID, 
       originFarmerID: _originFarmerID,
@@ -165,9 +166,15 @@ contract SupplyChain {
       originFarmInformation: _originFarmInformation,
       originFarmLatitude: _originFarmLatitude,
       originFarmLongitude: _originFarmLongitude,
-      productNotes: _productNotes
+      productID: 1,
+      productNotes: _productNotes,
+      productPrice: 0,
+      itemState: defaultState,
+      distributorID: address(0),
+      retailerID: address(0),
+      consumerID: msg.sender
     });
-    items.add(_upc, harvestedItem)
+    items[_upc] = harvestedItem;
     // Increment sku
     sku = sku + 1;
     // Emit the appropriate event
@@ -177,9 +184,9 @@ contract SupplyChain {
   // Define a function 'processtItem' that allows a farmer to mark an item 'Processed'
   function processItem(uint _upc) public 
   // Call modifier to check if upc has passed previous supply chain stage
-  
+  harvested(_upc)
   // Call modifier to verify caller of this function
-  
+  onlyOwner()
   {
     // Update the appropriate fields
     
@@ -190,7 +197,7 @@ contract SupplyChain {
   // Define a function 'packItem' that allows a farmer to mark an item 'Packed'
   function packItem(uint _upc) public 
   // Call modifier to check if upc has passed previous supply chain stage
-  
+  processed(_upc)
   // Call modifier to verify caller of this function
   
   {
@@ -203,7 +210,7 @@ contract SupplyChain {
   // Define a function 'sellItem' that allows a farmer to mark an item 'ForSale'
   function sellItem(uint _upc, uint _price) public 
   // Call modifier to check if upc has passed previous supply chain stage
-  
+  packed(_upc)
   // Call modifier to verify caller of this function
   
   {
@@ -218,9 +225,9 @@ contract SupplyChain {
   // and any excess ether sent is refunded back to the buyer
   function buyItem(uint _upc) public payable 
     // Call modifier to check if upc has passed previous supply chain stage
-    
+    forSale(_upc)
     // Call modifer to check if buyer has paid enough
-    
+    paidEnough(items[_upc].productPrice)
     // Call modifer to send any excess ether back to buyer
     
     {
@@ -237,7 +244,7 @@ contract SupplyChain {
   // Use the above modifers to check if the item is sold
   function shipItem(uint _upc) public 
     // Call modifier to check if upc has passed previous supply chain stage
-    
+    sold(_upc)
     // Call modifier to verify caller of this function
     
     {
@@ -251,7 +258,7 @@ contract SupplyChain {
   // Use the above modifiers to check if the item is shipped
   function receiveItem(uint _upc) public 
     // Call modifier to check if upc has passed previous supply chain stage
-    
+    shipped(_upc)
     // Access Control List enforced by calling Smart Contract / DApp
     {
     // Update the appropriate fields - ownerID, retailerID, itemState
@@ -264,7 +271,7 @@ contract SupplyChain {
   // Use the above modifiers to check if the item is received
   function purchaseItem(uint _upc) public 
     // Call modifier to check if upc has passed previous supply chain stage
-    
+    received(_upc)
     // Access Control List enforced by calling Smart Contract / DApp
     {
     // Update the appropriate fields - ownerID, consumerID, itemState

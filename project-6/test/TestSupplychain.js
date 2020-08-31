@@ -49,8 +49,7 @@ contract('SupplyChain', function(accounts) {
         var eventEmitted = false;
         // Watch the emitted event Harvested()
         var event = supplyChain.Harvested()
-        console.log(event)
-        await event.watch((err, res) => {
+        event.on('data', (err, res) => {
             eventEmitted = true
         })
 
@@ -83,7 +82,7 @@ contract('SupplyChain', function(accounts) {
         var event = supplyChain.Processed()
         
         // Watch the emitted event Processed()
-        await event.watch((err, res) => {
+        event.on('data', (err, res) => {
             eventEmitted = true
         })
 
@@ -106,7 +105,7 @@ contract('SupplyChain', function(accounts) {
         var event = supplyChain.Packed()
         
         // Watch the emitted event Packed()
-        await event.watch((err, res) => {
+        event.on('data', (err, res) => {
             eventEmitted = true
         })
 
@@ -129,7 +128,7 @@ contract('SupplyChain', function(accounts) {
         var event = supplyChain.ForSale()
         
         // Watch the emitted event ForSale()
-        await event.watch((err, res) => {
+        event.on('data', (err, res) => {
             eventEmitted = true
         })
 
@@ -152,7 +151,7 @@ contract('SupplyChain', function(accounts) {
         var event = supplyChain.Sold()
         
         // Watch the emitted event Sold()
-        await event.watch((err, res) => {
+        event.on('data', (err, res) => {
             eventEmitted = true
         })
 
@@ -175,7 +174,7 @@ contract('SupplyChain', function(accounts) {
         var event = supplyChain.Shipped()
         
         // Watch the emitted event Shipped()
-        await event.watch((err, res) => {
+        event.on('data', (err, res) => {
             eventEmitted = true
         })
 
@@ -198,7 +197,7 @@ contract('SupplyChain', function(accounts) {
         var event = supplyChain.Received()
         
         // Watch the emitted event Received()
-        await event.watch((err, res) => {
+        event.on('data', (err, res) => {
             eventEmitted = true
         })
 
@@ -221,7 +220,7 @@ contract('SupplyChain', function(accounts) {
         var event = supplyChain.Purchased()
         
         // Watch the emitted event Purchased()
-        await event.watch((err, res) => {
+        event.on('data', (err, res) => {
             eventEmitted = true
         })
 

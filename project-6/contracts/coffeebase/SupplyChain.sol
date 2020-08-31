@@ -189,7 +189,7 @@ contract SupplyChain {
   onlyOwner()
   {
     // Update the appropriate fields
-    
+    items[_upc].itemState = State.Processed;
     // Emit the appropriate event
     emit Processed(_upc);
   }
@@ -202,7 +202,7 @@ contract SupplyChain {
   
   {
     // Update the appropriate fields
-    
+    items[_upc].itemState = State.Packed;
     // Emit the appropriate event
     emit Packed(_upc);
   }
@@ -215,7 +215,7 @@ contract SupplyChain {
   
   {
     // Update the appropriate fields
-    
+    items[_upc].itemState = State.ForSale;
     // Emit the appropriate event
     emit ForSale(_upc);
   }
@@ -233,7 +233,7 @@ contract SupplyChain {
     {
     
     // Update the appropriate fields - ownerID, distributorID, itemState
-    
+    items[_upc].itemState = State.Sold;
     // Transfer money to farmer
     
     // emit the appropriate event
@@ -249,7 +249,7 @@ contract SupplyChain {
     
     {
     // Update the appropriate fields
-    
+    items[_upc].itemState = State.Shipped;
     // Emit the appropriate event
     emit Shipped(_upc);
   }
@@ -262,7 +262,7 @@ contract SupplyChain {
     // Access Control List enforced by calling Smart Contract / DApp
     {
     // Update the appropriate fields - ownerID, retailerID, itemState
-    
+    items[_upc].itemState = State.Received;
     // Emit the appropriate event
     emit Received(_upc);
   }
@@ -275,7 +275,7 @@ contract SupplyChain {
     // Access Control List enforced by calling Smart Contract / DApp
     {
     // Update the appropriate fields - ownerID, consumerID, itemState
-    
+    items[_upc].itemState = State.Purchased;
     // Emit the appropriate event
     emit Purchased(_upc);
   }

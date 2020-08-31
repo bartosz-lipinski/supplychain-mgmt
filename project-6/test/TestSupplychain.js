@@ -46,7 +46,14 @@ contract('SupplyChain', function(accounts) {
         const supplyChain = await SupplyChain.deployed()
         
         // Mark an item as Harvested by calling function harvestItem()
-        await supplyChain.harvestItem(upc, originFarmerID, originFarmName, originFarmInformation, originFarmLatitude, originFarmLongitude, productNotes)
+        await supplyChain.harvestItem(
+            upc, 
+            originFarmerID, 
+            originFarmName, 
+            originFarmInformation, 
+            originFarmLatitude, 
+            originFarmLongitude, 
+            productNotes, { from: originFarmerID })
         const events = await supplyChain.getPastEvents('Harvested');
 
         // Retrieve the just now saved item from blockchain by calling function fetchItem()
@@ -72,16 +79,20 @@ contract('SupplyChain', function(accounts) {
         const supplyChain = await SupplyChain.deployed()
 
         // Mark an item as Processed by calling function processtItem()
-        await supplyChain.processItem(upc)
+        await supplyChain.processItem(upc, { from: originFarmerID })
 
         // get past events for Processed
         const events = await supplyChain.getPastEvents('Processed');
 
         // Retrieve the just now saved item from blockchain by calling function fetchItem()
+        const resultBufferOne = await supplyChain.fetchItemBufferOne.call(upc)
         const resultBufferTwo = await supplyChain.fetchItemBufferTwo.call(upc)
 
         // Verify the result set
         assert.equal(events.length > 0, true, 'Invalid event emitted')
+        // assert.equal(resultBufferOne[0], sku, 'Error: Invalid item SKU')
+        // assert.equal(resultBufferOne[1], upc, 'Error: Invalid item UPC')
+        // assert.equal(resultBufferOne[2], ownerID, 'Error: Invalid owner')
         assert.equal(resultBufferTwo[5], 1, 'Error: Invalid item State')
     })    
 
@@ -90,7 +101,7 @@ contract('SupplyChain', function(accounts) {
         const supplyChain = await SupplyChain.deployed()
 
         // Mark an item as Packed by calling function packItem()
-        await supplyChain.packItem(upc)
+        await supplyChain.packItem(upc, { from: originFarmerID })
 
         // get past events for Packed
         const events = await supplyChain.getPastEvents('Packed');
@@ -108,7 +119,7 @@ contract('SupplyChain', function(accounts) {
         const supplyChain = await SupplyChain.deployed()
 
         // Mark an item as ForSale by calling function sellItem()
-        await supplyChain.sellItem(upc, productPrice)
+        await supplyChain.sellItem(upc, productPrice, { from: originFarmerID })
 
         // get past events for ForSale
         const events = await supplyChain.getPastEvents('ForSale');
@@ -126,7 +137,7 @@ contract('SupplyChain', function(accounts) {
         const supplyChain = await SupplyChain.deployed()
 
         // Mark an item as Sold by calling function buyItem()
-        await supplyChain.buyItem(upc)
+        await supplyChain.buyItem(upc, { from: distributorID })
 
         // get past events for Sold
         const events = await supplyChain.getPastEvents('Sold');
@@ -144,7 +155,7 @@ contract('SupplyChain', function(accounts) {
         const supplyChain = await SupplyChain.deployed()
 
         // Mark an item as Shipped by calling function shipItem()
-        await supplyChain.shipItem(upc)
+        await supplyChain.shipItem(upc, { from: distributorID })
 
         // get past events for Shipped
         const events = await supplyChain.getPastEvents('Shipped');
@@ -162,7 +173,7 @@ contract('SupplyChain', function(accounts) {
         const supplyChain = await SupplyChain.deployed()
         
         // Mark an item as Received by calling function receiveItem()
-        await supplyChain.receiveItem(upc)
+        await supplyChain.receiveItem(upc, { from: retailerID })
 
         // get past events for Received
         const events = await supplyChain.getPastEvents('Received');
@@ -180,7 +191,7 @@ contract('SupplyChain', function(accounts) {
         const supplyChain = await SupplyChain.deployed()
         
         // Mark an item as Purchased by calling function purchaseItem()
-        await supplyChain.purchaseItem(upc)
+        await supplyChain.purchaseItem(upc, { from: consumerID })
 
         // get past events for Purchased
         const events = await supplyChain.getPastEvents('Purchased');

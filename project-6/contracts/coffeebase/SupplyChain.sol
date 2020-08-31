@@ -160,7 +160,7 @@ contract SupplyChain {
     Item memory harvestedItem = Item({
       sku: sku,
       upc:_upc, 
-      ownerID:_originFarmerID, 
+      ownerID: msg.sender, 
       originFarmerID: _originFarmerID,
       originFarmName: _originFarmName,
       originFarmInformation: _originFarmInformation,
@@ -186,7 +186,7 @@ contract SupplyChain {
   // Call modifier to check if upc has passed previous supply chain stage
   harvested(_upc)
   // Call modifier to verify caller of this function
-  onlyOwner()
+  verifyCaller(items[_upc].originFarmerID)
   {
     // Update the appropriate fields
     items[_upc].itemState = State.Processed;
@@ -199,7 +199,7 @@ contract SupplyChain {
   // Call modifier to check if upc has passed previous supply chain stage
   processed(_upc)
   // Call modifier to verify caller of this function
-  
+  verifyCaller(items[_upc].originFarmerID)
   {
     // Update the appropriate fields
     items[_upc].itemState = State.Packed;
@@ -212,7 +212,7 @@ contract SupplyChain {
   // Call modifier to check if upc has passed previous supply chain stage
   packed(_upc)
   // Call modifier to verify caller of this function
-  
+  verifyCaller(items[_upc].originFarmerID)
   {
     // Update the appropriate fields
     items[_upc].itemState = State.ForSale;
@@ -234,6 +234,8 @@ contract SupplyChain {
     
     // Update the appropriate fields - ownerID, distributorID, itemState
     items[_upc].itemState = State.Sold;
+    items[_upc].ownerID = msg.sender;
+    items[_upc].distributorID = msg.sender;
     // Transfer money to farmer
     
     // emit the appropriate event
@@ -246,7 +248,7 @@ contract SupplyChain {
     // Call modifier to check if upc has passed previous supply chain stage
     sold(_upc)
     // Call modifier to verify caller of this function
-    
+    verifyCaller(items[_upc].distributorID)
     {
     // Update the appropriate fields
     items[_upc].itemState = State.Shipped;
@@ -263,6 +265,8 @@ contract SupplyChain {
     {
     // Update the appropriate fields - ownerID, retailerID, itemState
     items[_upc].itemState = State.Received;
+    items[_upc].ownerID = msg.sender;
+    items[_upc].retailerID = msg.sender;
     // Emit the appropriate event
     emit Received(_upc);
   }
@@ -276,6 +280,8 @@ contract SupplyChain {
     {
     // Update the appropriate fields - ownerID, consumerID, itemState
     items[_upc].itemState = State.Purchased;
+    items[_upc].ownerID = msg.sender;
+    items[_upc].consumerID = msg.sender;
     // Emit the appropriate event
     emit Purchased(_upc);
   }

@@ -2527,12 +2527,12 @@
         }
       },
       "links": {},
-      "address": "0x6BF90a3c63fAdE10feaD048FA1516f94e4096374",
-      "transactionHash": "0x70b008beaf622aff579a22e17c50a530d6092f6fa2aefbd99af14944d7f9c9f3"
+      "address": "0xf2ee0b0Cdcae5013930B92c0Ba54F7F7f1933613",
+      "transactionHash": "0x278f88b08d5649d4ec4ef6c43f2613e755ab2a43d057b03f7f717688025b3a65"
     }
   },
   "schemaVersion": "3.2.3",
-  "updatedAt": "2020-08-29T01:53:25.346Z",
+  "updatedAt": "2020-09-01T14:21:46.247Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}

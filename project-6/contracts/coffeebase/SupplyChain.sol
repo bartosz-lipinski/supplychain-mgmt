@@ -216,6 +216,7 @@ contract SupplyChain {
   {
     // Update the appropriate fields
     items[_upc].itemState = State.ForSale;
+    items[_upc].productPrice = _price;
     // Emit the appropriate event
     emit ForSale(_upc);
   }
@@ -229,7 +230,7 @@ contract SupplyChain {
     // Call modifer to check if buyer has paid enough
     paidEnough(items[_upc].productPrice)
     // Call modifer to send any excess ether back to buyer
-    
+    checkValue(_upc)
     {
     
     // Update the appropriate fields - ownerID, distributorID, itemState
@@ -237,7 +238,8 @@ contract SupplyChain {
     items[_upc].ownerID = msg.sender;
     items[_upc].distributorID = msg.sender;
     // Transfer money to farmer
-    
+    owner.transfer(items[_upc].productPrice);
+
     // emit the appropriate event
     emit Sold(_upc);
   }

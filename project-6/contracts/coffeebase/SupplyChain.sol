@@ -6,16 +6,9 @@ import "../coffeeaccesscontrol/DistributorRole.sol";
 import "../coffeeaccesscontrol/RetailerRole.sol";
 import "../coffeeaccesscontrol/ConsumerRole.sol";
 
-// Define a contract 'Supplychain'
 contract SupplyChain is FarmerRole, DistributorRole, RetailerRole, ConsumerRole {
-
-  // Define 'owner'
   address payable owner;
-
-  // Define a variable called 'upc' for Universal Product Code (UPC)
   uint  upc;
-
-  // Define a variable called 'sku' for Stock Keeping Unit (SKU)
   uint  sku;
 
   // Define a public mapping 'items' that maps the UPC to an Item.
@@ -59,7 +52,6 @@ contract SupplyChain is FarmerRole, DistributorRole, RetailerRole, ConsumerRole 
     address payable consumerID; // Metamask-Ethereum address of the Consumer
   }
 
-  // Define 8 events with the same 8 state values and accept 'upc' as input argument
   event Harvested(uint upc);
   event Processed(uint upc);
   event Packed(uint upc);
@@ -69,25 +61,21 @@ contract SupplyChain is FarmerRole, DistributorRole, RetailerRole, ConsumerRole 
   event Received(uint upc);
   event Purchased(uint upc);
 
-  // Define a modifer that checks to see if msg.sender == owner of the contract
   modifier onlyOwner() {
     require(msg.sender == owner);
     _;
   }
 
-  // Define a modifer that verifies the Caller
   modifier verifyCaller (address _address) {
     require(msg.sender == _address); 
     _;
   }
 
-  // Define a modifier that checks if the paid amount is sufficient to cover the price
   modifier paidEnough(uint _price) { 
     require(msg.value >= _price); 
     _;
   }
   
-  // Define a modifier that checks the price and refunds the remaining balance
   modifier checkValue(uint _upc) {
     _;
     uint _price = items[_upc].productPrice;
@@ -95,57 +83,46 @@ contract SupplyChain is FarmerRole, DistributorRole, RetailerRole, ConsumerRole 
     items[_upc].consumerID.transfer(amountToReturn);
   }
 
-  // Define a modifier that checks if an item.state of a upc is Harvested
   modifier harvested(uint _upc) {
     require(items[_upc].itemState == State.Harvested);
     _;
   }
 
-  // Define a modifier that checks if an item.state of a upc is Processed
   modifier processed(uint _upc) {
     require(items[_upc].itemState == State.Processed);
     _;
   }
   
-  // Define a modifier that checks if an item.state of a upc is Packed
   modifier packed(uint _upc) {
     require(items[_upc].itemState == State.Packed);
     _;
   }
 
-  // Define a modifier that checks if an item.state of a upc is ForSale
   modifier forSale(uint _upc) {
     require(items[_upc].itemState == State.ForSale);
     _;
   }
 
-  // Define a modifier that checks if an item.state of a upc is Sold
   modifier sold(uint _upc) {
     require(items[_upc].itemState == State.Sold);
     _;
   }
   
-  // Define a modifier that checks if an item.state of a upc is Shipped
   modifier shipped(uint _upc) {
     require(items[_upc].itemState == State.Shipped);
     _;
   }
 
-  // Define a modifier that checks if an item.state of a upc is Received
   modifier received(uint _upc) {
     require(items[_upc].itemState == State.Received);
     _;
   }
 
-  // Define a modifier that checks if an item.state of a upc is Purchased
   modifier purchased(uint _upc) {
     require(items[_upc].itemState == State.Purchased);
     _;
   }
 
-  // In the constructor set 'owner' to the address that instantiated the contract
-  // and set 'sku' to 1
-  // and set 'upc' to 1
   constructor() public payable {
     owner = msg.sender;
     sku = 1;
@@ -159,7 +136,6 @@ contract SupplyChain is FarmerRole, DistributorRole, RetailerRole, ConsumerRole 
     }
   }
 
-  // Define a function 'harvestItem' that allows a farmer to mark an item 'Harvested'
   function harvestItem(
       uint _upc,
       address _originFarmerID,
@@ -171,7 +147,6 @@ contract SupplyChain is FarmerRole, DistributorRole, RetailerRole, ConsumerRole 
       public 
       onlyFarmer()
   {
-    // Add the new item as part of Harvest
     Item memory harvestedItem = Item({
       sku: sku,
       upc:_upc, 
@@ -192,18 +167,14 @@ contract SupplyChain is FarmerRole, DistributorRole, RetailerRole, ConsumerRole 
     items[_upc] = harvestedItem;
     // Increment sku
     sku = sku + 1;
-    // Emit the appropriate event
     emit Harvested(_upc);
   }
 
-  // Define a function 'processtItem' that allows a farmer to mark an item 'Processed'
   function processItem(uint _upc) public 
     harvested(_upc)
     onlyFarmer()
   {
-    // Update the appropriate fields
     items[_upc].itemState = State.Processed;
-    // Emit the appropriate event
     emit Processed(_upc);
   }
 
@@ -211,9 +182,7 @@ contract SupplyChain is FarmerRole, DistributorRole, RetailerRole, ConsumerRole 
     processed(_upc)
     onlyFarmer()
   {
-    // Update the appropriate fields
     items[_upc].itemState = State.Packed;
-    // Emit the appropriate event
     emit Packed(_upc);
   }
 
@@ -221,10 +190,8 @@ contract SupplyChain is FarmerRole, DistributorRole, RetailerRole, ConsumerRole 
     packed(_upc)
     onlyFarmer()
   {
-    // Update the appropriate fields
     items[_upc].itemState = State.ForSale;
     items[_upc].productPrice = _price;
-    // Emit the appropriate event
     emit ForSale(_upc);
   }
 

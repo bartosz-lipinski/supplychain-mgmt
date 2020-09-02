@@ -40,6 +40,17 @@ contract('SupplyChain', function(accounts) {
     console.log("Distributor: accounts[2] ", accounts[2])
     console.log("Retailer: accounts[3] ", accounts[3])
     console.log("Consumer: accounts[4] ", accounts[4])
+    // Deploy SupplyChain and Register Actors
+    it("0. Deploy SupplyChain and Register Actors",
+    async () => {
+        supplyChain = await SupplyChain.deployed()
+
+        // Mark an item as Harvested by calling function harvestItem()
+        await supplyChain.addFarmer(originFarmerID, { from: ownerID })
+        await supplyChain.addDistributor(distributorID, { from: ownerID })
+        await supplyChain.addRetailer(retailerID, { from: ownerID })
+        await supplyChain.addConsumer(consumerID, { from: ownerID })
+    })
 
     // 1st Test
     it("Testing smart contract function harvestItem() that allows a farmer to harvest coffee", async() => {
@@ -70,6 +81,7 @@ contract('SupplyChain', function(accounts) {
         assert.equal(resultBufferOne[5], originFarmInformation, 'Error: Missing or Invalid originFarmInformation')
         assert.equal(resultBufferOne[6], originFarmLatitude, 'Error: Missing or Invalid originFarmLatitude')
         assert.equal(resultBufferOne[7], originFarmLongitude, 'Error: Missing or Invalid originFarmLongitude')
+        assert.equal(resultBufferTwo[3], productNotes, 'Error: Missing or Invalid originFarmLongitude')
         assert.equal(resultBufferTwo[5], 0, 'Error: Invalid item State')
         
     })    

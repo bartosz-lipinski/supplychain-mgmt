@@ -1,7 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.21 <0.6.0;
+
+import "../coffeeaccesscontrol/FarmerRole.sol";
+import "../coffeeaccesscontrol/DistributorRole.sol";
+import "../coffeeaccesscontrol/RetailerRole.sol";
+import "../coffeeaccesscontrol/ConsumerRole.sol";
+
 // Define a contract 'Supplychain'
-contract SupplyChain {
+contract SupplyChain is FarmerRole, DistributorRole, RetailerRole, ConsumerRole {
 
   // Define 'owner'
   address payable owner;
@@ -154,7 +160,16 @@ contract SupplyChain {
   }
 
   // Define a function 'harvestItem' that allows a farmer to mark an item 'Harvested'
-  function harvestItem(uint _upc, address _originFarmerID, string memory _originFarmName, string memory _originFarmInformation, string memory _originFarmLatitude, string memory _originFarmLongitude, string memory _productNotes) public 
+  function harvestItem(
+      uint _upc,
+      address _originFarmerID,
+      string memory _originFarmName,
+      string memory _originFarmInformation,
+      string memory _originFarmLatitude,
+      string memory _originFarmLongitude,
+      string memory _productNotes) 
+      public 
+      onlyFarmer()
   {
     // Add the new item as part of Harvest
     Item memory harvestedItem = Item({
@@ -166,7 +181,7 @@ contract SupplyChain {
       originFarmInformation: _originFarmInformation,
       originFarmLatitude: _originFarmLatitude,
       originFarmLongitude: _originFarmLongitude,
-      productID: 1,
+      productID: sku + _upc,
       productNotes: _productNotes,
       productPrice: 0,
       itemState: defaultState,
@@ -311,18 +326,6 @@ contract SupplyChain {
   originFarmInformation = item.originFarmInformation;
   originFarmLatitude = item.originFarmLatitude;
   originFarmLongitude = item.originFarmLongitude;
-
-  return 
-  (
-  itemSKU,
-  itemUPC,
-  ownerID,
-  originFarmerID,
-  originFarmName,
-  originFarmInformation,
-  originFarmLatitude,
-  originFarmLongitude
-  );
   }
 
   // Define a function 'fetchItemBufferTwo' that fetches the data
@@ -350,18 +353,5 @@ contract SupplyChain {
   distributorID = item.distributorID;
   retailerID = item.retailerID;
   consumerID = item.consumerID;
-    
-  return 
-  (
-  itemSKU,
-  itemUPC,
-  productID,
-  productNotes,
-  productPrice,
-  itemState,
-  distributorID,
-  retailerID,
-  consumerID
-  );
   }
 }

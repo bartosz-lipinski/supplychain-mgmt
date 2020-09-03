@@ -13,6 +13,7 @@ App = {
     originFarmLongitude: null,
     productNotes: null,
     productPrice: 0,
+    farmerID: "0x0000000000000000000000000000000000000000",
     distributorID: "0x0000000000000000000000000000000000000000",
     retailerID: "0x0000000000000000000000000000000000000000",
     consumerID: "0x0000000000000000000000000000000000000000",
@@ -27,7 +28,7 @@ App = {
         App.sku = $("#sku").val();
         App.upc = $("#upc").val();
         App.ownerID = $("#ownerID").val();
-        App.originFarmerID = $("#originFarmerID").val();
+        App.originFarmerID = App.farmerID = $("#originFarmerID").val();
         App.originFarmName = $("#originFarmName").val();
         App.originFarmInformation = $("#originFarmInformation").val();
         App.originFarmLatitude = $("#originFarmLatitude").val();
@@ -108,10 +109,14 @@ App = {
             App.contracts.SupplyChain = TruffleContract(SupplyChainArtifact);
             App.contracts.SupplyChain.setProvider(App.web3Provider);
             
+            App.registerConsumer();
+            App.registerFarmer();
+            App.registerRetailer();
+            App.registerDistributor();
+
             App.fetchItemBufferOne();
             App.fetchItemBufferTwo();
             App.fetchEvents();
-
         });
 
         return App.bindEvents();
@@ -119,6 +124,38 @@ App = {
 
     bindEvents: function() {
         $(document).on('click', App.handleButtonClick);
+    },
+
+    registerRole: function (role) {
+        App.readForm();
+        App.ownerID = $("#ownerID").val();
+        App.contracts.SupplyChain.deployed().then(function (instance) {
+            return instance['add'+role](
+                App[role.toLowerCase()+'ID'],
+                { from: App.ownerID }
+            );
+        }).then(function (result) {
+            $("#ftc-item").text(result);
+            console.log('Registered ' + role, result);
+        }).catch(function (err) {
+            console.log(err.message);
+        });
+    },
+
+    registerFarmer: function() {
+        App.registerRole('Farmer');
+    },
+
+    registerDistributor: function() {
+        App.registerRole('Distributor');
+    },
+
+    registerRetailer: function() {
+        App.registerRole('Retailer');
+    },
+
+    registerConsumer: function() {
+        App.registerRole('Consumer');
     },
 
     handleButtonClick: async function(event) {
@@ -132,34 +169,32 @@ App = {
         switch(processId) {
             case 1:
                 return await App.harvestItem(event);
-                break;
             case 2:
                 return await App.processItem(event);
-                break;
             case 3:
                 return await App.packItem(event);
-                break;
             case 4:
                 return await App.sellItem(event);
-                break;
             case 5:
                 return await App.buyItem(event);
-                break;
             case 6:
                 return await App.shipItem(event);
-                break;
             case 7:
                 return await App.receiveItem(event);
-                break;
             case 8:
                 return await App.purchaseItem(event);
-                break;
             case 9:
                 return await App.fetchItemBufferOne(event);
-                break;
             case 10:
                 return await App.fetchItemBufferTwo(event);
-                break;
+            case 11:
+                return await App.registerFarmer(event);
+            case 12:
+                return await App.registerDistributor(event);
+            case 13:
+                return await App.registerRetailer(event);
+            case 14:
+                return await App.registerConsumer(event);
             }
     },
 
@@ -167,6 +202,7 @@ App = {
         event.preventDefault();
         var processId = parseInt($(event.target).data('id'));
 
+        App.readForm();
         App.contracts.SupplyChain.deployed().then(function(instance) {
             return instance.harvestItem(
                 App.upc, 
@@ -175,8 +211,8 @@ App = {
                 App.originFarmInformation, 
                 App.originFarmLatitude, 
                 App.originFarmLongitude, 
-                App.productNotes
-            );
+                App.productNotes,
+                { from: App.originFarmerID });
         }).then(function(result) {
             $("#ftc-item").text(result);
             console.log('harvestItem',result);

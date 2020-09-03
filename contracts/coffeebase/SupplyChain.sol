@@ -129,6 +129,13 @@ contract SupplyChain is FarmerRole, DistributorRole, RetailerRole, ConsumerRole 
     upc = 1;
   }
 
+  function addRoles(address farmer, address distributor, address retailer, address consumer) public onlyOwner() {
+    addFarmer(farmer);
+    addDistributor(distributor);
+    addRetailer(retailer);
+    addConsumer(consumer);
+  }
+
   // Define a function 'kill' if required
   function kill() public {
     if (msg.sender == owner) {

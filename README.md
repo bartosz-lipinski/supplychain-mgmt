@@ -28,7 +28,7 @@ Repository contains sample Ehtrum DApp that implements basic supplychain. Chain 
 ![screenshot-3](images/screenshot-3.PNG)
 ![screenshot-4](images/screenshot-4.PNG)
 
-**CURRENT:** live version of contract: [ETHERSCAN]()
+**CURRENT:** live version of contract: [ETHERSCAN](https://rinkeby.etherscan.io/address/0x2b8626391e3039d3f3d1bf62ac706c1f96678d8d)
 
 ## Versions Used:
 

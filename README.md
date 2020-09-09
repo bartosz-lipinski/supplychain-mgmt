@@ -7,6 +7,8 @@ Repository contains sample Ehtrum DApp that implements basic supplychain. Chain 
 * Retailer can only: RECEIVE
 * Consumer: PURCHASE
 
+#### IPFS was not used for the project.
+
 ## Diagrams
 
 ### Class Diagram:

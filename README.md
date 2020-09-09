@@ -1,5 +1,12 @@
 ## Overview
 
+Repository contains sample Ehtrum DApp that implements basic supplychain. Chain includes four different roles that can transact and verify authenticity using on-chain data.
+
+* Farmer can only: HARVEST, PROCESS, PACK, SELL
+* Distributor can only: BUY, SHIP
+* Retailer can only: RECEIVE
+* Consumer: PURCHASE
+
 ## Diagrams
 
 ### Class Diagram:
@@ -14,7 +21,17 @@
 ### Activity Diagram:
 ![Activity Diagram](images/activity-diagram.png)
 
-## Package Versions:
+## Preview
+
+![app-preview-image-1](images/preview-1.PNG)
+![app-preview-image-2](images/preview-2.PNG)
+![app-preview-image-3](images/preview-3.PNG)
+![app-preview-image-4](images/preview-4.PNG)
+![app-preview-image-5](images/preview-5.PNG)
+
+**CURRENT:** live version of contract: [ETHERSCAN](https://rinkeby.etherscan.io/address/0x0b0f0D2C24E795133Bf66a977B1F8e9d73759429)
+
+## Versions Used:
 
 * Node - v10.20.1
 * Solidity - v0.5.17
@@ -32,4 +49,4 @@ These instructions will get you a copy of the project up and running on your loc
 * [IPFS](https://ipfs.io/) - IPFS is the Distributed Web | A peer-to-peer hypermedia protocol
 to make the web faster, safer, and more open.
 * [Truffle Framework](http://truffleframework.com/) - Truffle is the most popular development framework for Ethereum with a mission to make your life a whole lot easier.
-
+* Starter code was provided by [Udacity](https://github.com/udacity/nd1309-Project-6b-Example-Template)
